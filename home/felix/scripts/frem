@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "Syncing /mnt/floppy..."
+sync 
+echo "Unmounting /mnt/floppy..."
+umount /mnt/floppy
+echo "Done."
+

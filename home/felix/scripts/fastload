@@ -1,0 +1,29 @@
+#!/bin/bash
+
+MOUNTPOINT="/mnt/floppy"
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 <device letter>"
+    exit 1
+fi
+
+CHOICE="${1^^}"  # Uppercase
+
+if mountpoint -q "$MOUNTPOINT"; then
+    umount "$MOUNTPOINT" || { echo "Failed to unmount $MOUNTPOINT"; exit 1; }
+fi
+
+mapfile -t devices < <(lsblk -dn -o NAME,SIZE,TYPE | awk '$2!="" && $3=="disk"{print $1,$2}')
+
+index=$(( $(printf "%d" "'$CHOICE") - 65 ))
+
+if [ $index -lt 0 ] || [ $index -ge ${#devices[@]} ]; then
+    echo "Invalid device letter."
+    exit 1
+fi
+
+DEVICE_NAME=$(echo "${devices[index]}" | awk '{print $1}')
+
+mount "/dev/$DEVICE_NAME" "$MOUNTPOINT" || { echo "Failed to mount /dev/$DEVICE_NAME"; exit 1; }
+sync
+echo "Done."

@@ -1,0 +1,77 @@
+#!/bin/bash
+
+MOUNTPOINT="/mnt/floppy"
+
+echo "Felix floppy loader assistant"
+
+if mountpoint -q "$MOUNTPOINT"; then
+    read -rp "$MOUNTPOINT is currently mounted. Do you want to unmount it? (y/n) " answer
+    if [[ "$answer" == "y" ]]; then
+        umount "$MOUNTPOINT"
+        echo "Unmounted $MOUNTPOINT"
+    else
+        echo "Aborting. Please unmount $MOUNTPOINT manually and try again."
+        exit 1
+    fi
+fi
+
+mapfile -t devices < <(lsblk -dn -o NAME,SIZE,TYPE | awk '$2!="" && $3=="disk"{print $1,$2}')
+
+if [ ${#devices[@]} -eq 0 ]; then
+    echo "No devices found."
+    exit 1
+fi
+
+echo "Select a device to mount:"
+letters=()
+for i in "${!devices[@]}"; do
+    letter=$(printf "\\x$(printf %x $((65 + i)) )")  # 65=A
+    letters+=("$letter")
+    name=$(echo "${devices[i]}" | awk '{print $1}')
+    size=$(echo "${devices[i]}" | awk '{print $2}')
+    echo "$letter > /dev/$name <$size>"
+done
+
+read -rp "Enter your choice: " choice
+choice=${choice^^} 
+
+index=-1
+for i in "${!letters[@]}"; do
+    if [[ "${letters[i]}" == "$choice" ]]; then
+        index=$i
+        break
+    fi
+done
+
+if [ $index -eq -1 ]; then
+    echo "Invalid choice."
+    exit 1
+fi
+
+DEVICE_NAME=$(echo "${devices[index]}" | awk '{print $1}')
+echo "Mounting /dev/$DEVICE_NAME at $MOUNTPOINT..."
+mount "/dev/$DEVICE_NAME" "$MOUNTPOINT" || { echo "Failed to mount."; exit 1; }
+sync
+directory -f
+if [ ! /mnt/floppy/autorun ]; then
+    echo "Autorun not found. Done."
+else
+    if [[ $NOARPR != 1 ]]; then
+        read -rp "Autorun (y/n)?" answer
+    else
+        old=$(pwd)
+        cd /mnt/floppy
+        ./autorun
+        cd $old
+    fi
+    if [[ "$answer" == "y" ]]; then
+        old=$(pwd)
+        cd /mnt/floppy
+        ./autorun
+        cd $old
+
+    else 
+        echo "Autorun file not ran"
+    fi
+fi
+

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 <frequency in Hz>"
+    exit 1
+fi
+
+FREQ="$1"
+PIPE="/dev/buzzer"
+echo -e "${FREQ}\n" > "$PIPE"
