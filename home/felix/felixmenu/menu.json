@@ -3,20 +3,20 @@
     "title": "System",
     "help": "System information and monitoring tools.",
     "submenu": [
+        "title": "Top's",
+        "submenu": [
       {
         "title": "btop",
-        "cmd": "btop",
-        "help": "Interactive resource monitor. CPU, memory, disk, network at a glance."
+        "cmd": "btop"
       },
       {
         "title": "htop",
-        "cmd": "htop",
-        "help": "Interactive process viewer. See running processes and manage them."
-      },
+        "cmd": "htop"
+      }
+    ]
       {
         "title": "uptime",
-        "cmd": "uptime",
-        "help": "Show how long the system has been running and load averages."
+        "cmd": "uptime"
       }
     ]
   }

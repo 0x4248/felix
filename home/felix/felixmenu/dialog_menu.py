@@ -127,10 +127,10 @@ def run_menu(items, title=APP_TITLE):
             result = subprocess.run(cmd_str, shell=True)
             print()
             if result.returncode == 0:
-                print(GREEN + 'Command finished successfully.' + RESET)
+                pass
             else:
                 print(RED + f'Command exited with code {result.returncode}.' + RESET)
-            input('\nPress Enter to return to Felix Menu...')
+                input('\nPress Enter to return to Felix Menu...')
 
 
 def show_msg(title='Info', text=''):
