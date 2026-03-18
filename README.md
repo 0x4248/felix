@@ -6,8 +6,7 @@ and is used as my part of the console on my home lab.
 > **WARNING**
 > This WILL REMOVE your default getty and PAM authentication on ttys 1-5, and replace it with a custom getty.
 
-<img src="./doc/img/image1.jpg" alt="img1" width="300"/>
-<img src="./doc/img/image2.jpg" alt="img2" width="585"/>
+<img src="./doc/img/image1.jpg" alt="img1" width="200"/><img src="./doc/img/image2.jpg" alt="img2" width="400"/>
 
 *For clarity, TITAN DATA SYSTEM is the proper name for the home lab, and FELIX is the name of the console system running on it.*
 
