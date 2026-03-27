@@ -55,6 +55,7 @@ sync
 directory -f
 if [ ! /mnt/floppy/autorun ]; then
     echo "Autorun not found. Done."
+    exit 0
 else
     if [[ $NOARPR != 1 ]]; then
         read -rp "Autorun (y/n)?" answer

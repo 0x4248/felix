@@ -2,6 +2,7 @@
 echo "Syncing /mnt/floppy..."
 sync 
 echo "Unmounting /mnt/floppy..."
+cd /
 umount /mnt/floppy
 echo "Done."
 

@@ -65,4 +65,6 @@ else
   echo "Service file not found: $SERVICE_SRC"
 fi
 
+chmod +x /root/felix/scripts/*
+
 echo "Done."
