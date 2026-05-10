@@ -28,6 +28,6 @@ alias alarm="while true; do echo 2000 > $BUZZER; sleep 1; echo 0 > $BUZZER; slee
 alias cut="echo -e '\n\n\n\n\n\x1D\x56\x00' > $PRINTER"
 
 # Print takes in pipe and prints it without cutting
-aliss pr= "cat - | tee > $PRINTER"
+alias pr= "cat - | tee > $PRINTER"
 alias prc="cat - | tee > $PRINTER && cut"
 alias prf= "echo -e '\n\n\n\n\n\x1D\x56\x00' > $PRINTER; echo -e '*** $(date) ***\n' | tee > $PRINTER; cat - | tee > $PRINTER && cut"
