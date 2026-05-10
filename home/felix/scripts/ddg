@@ -1,1 +1,5 @@
-lynx https://lite.duckduckgo.com/lite
+if [ -z "$1" ]; then
+  lynx https://lite.duckduckgo.com/lite
+  exit 0
+fi
+lynx https://lite.duckduckgo.com/search?q="$1"
