@@ -1,0 +1,451 @@
+#!/bin/bash
+#
+# esc_set — ESC/POS mode helper
+# 4248 Systems
+#
+# Usage:
+#   esc_set bold_on
+#   esc_set double_hw
+#   esc_set cut
+#
+# Example:
+#   esc_set center
+#   echo "HELLO WORLD"
+#   esc_set normal
+#
+# Pipe to printer:
+#   ./esc_set bold_on > /dev/usb/lp0
+#
+
+PRINTER="${PRINTER:-/dev/stdout}"
+
+send() {
+    printf "$1" > "$PRINTER"
+}
+
+case "$1" in
+
+#
+# RESET
+#
+
+init)
+    send '\x1B\x40'
+    ;;
+
+#
+# TEXT MODES
+#
+
+normal)
+    send '\x1B\x21\x00'
+    ;;
+
+bold_on)
+    send '\x1B\x45\x01'
+    ;;
+
+bold_off)
+    send '\x1B\x45\x00'
+    ;;
+
+underline_on)
+    send '\x1B\x2D\x01'
+    ;;
+
+underline_thick)
+    send '\x1B\x2D\x02'
+    ;;
+
+underline_off)
+    send '\x1B\x2D\x00'
+    ;;
+
+italic_on)
+    send '\x1B\x34'
+    ;;
+
+italic_off)
+    send '\x1B\x35'
+    ;;
+
+invert_on)
+    send '\x1D\x42\x01'
+    ;;
+
+invert_off)
+    send '\x1D\x42\x00'
+    ;;
+
+strike_on)
+    send '\x1B\x47\x01'
+    ;;
+
+strike_off)
+    send '\x1B\x47\x00'
+    ;;
+
+#
+# FONT SELECTION
+#
+
+font_a)
+    send '\x1B\x4D\x00'
+    ;;
+
+font_b)
+    send '\x1B\x4D\x01'
+    ;;
+
+font_c)
+    send '\x1B\x4D\x02'
+    ;;
+
+#
+# SIZE MODES
+#
+
+double_width)
+    send '\x1B\x21\x20'
+    ;;
+
+double_height)
+    send '\x1B\x21\x10'
+    ;;
+
+double_hw)
+    send '\x1B\x21\x30'
+    ;;
+
+quad)
+    send '\x1D\x21\x11'
+    ;;
+
+size_normal)
+    send '\x1D\x21\x00'
+    ;;
+
+size_wide)
+    send '\x1D\x21\x10'
+    ;;
+
+size_tall)
+    send '\x1D\x21\x01'
+    ;;
+
+size_big)
+    send '\x1D\x21\x22'
+    ;;
+
+#
+# ALIGNMENT
+#
+
+left)
+    send '\x1B\x61\x00'
+    ;;
+
+center)
+    send '\x1B\x61\x01'
+    ;;
+
+right)
+    send '\x1B\x61\x02'
+    ;;
+
+#
+# PAPER FEED
+#
+
+lf)
+    send '\x0A'
+    ;;
+
+feed)
+    send '\x1B\x64\x01'
+    ;;
+
+feed2)
+    send '\x1B\x64\x02'
+    ;;
+
+feed3)
+    send '\x1B\x64\x03'
+    ;;
+
+feed5)
+    send '\x1B\x64\x05'
+    ;;
+
+#
+# CUTTING
+#
+
+cut)
+    send '\x1D\x56\x00'
+    ;;
+
+partial_cut)
+    send '\x1D\x56\x01'
+    ;;
+
+#
+# CASH DRAWER
+#
+
+drawer)
+    send '\x1B\x70\x00\x19\xFA'
+    ;;
+
+#
+# LINE SPACING
+#
+
+ls_default)
+    send '\x1B\x32'
+    ;;
+
+ls_24)
+    send '\x1B\x33\x18'
+    ;;
+
+ls_16)
+    send '\x1B\x33\x10'
+    ;;
+
+ls_8)
+    send '\x1B\x33\x08'
+    ;;
+
+#
+# CHARACTER TABLES
+#
+
+cp437)
+    send '\x1B\x74\x00'
+    ;;
+
+cp850)
+    send '\x1B\x74\x02'
+    ;;
+
+cp860)
+    send '\x1B\x74\x03'
+    ;;
+
+cp863)
+    send '\x1B\x74\x04'
+    ;;
+
+cp865)
+    send '\x1B\x74\x05'
+    ;;
+
+cp866)
+    send '\x1B\x74\x11'
+    ;;
+
+windows1252)
+    send '\x1B\x74\x10'
+    ;;
+
+#
+# ROTATION
+#
+
+rotate_on)
+    send '\x1B\x56\x01'
+    ;;
+
+rotate_off)
+    send '\x1B\x56\x00'
+    ;;
+
+#
+# UPSIDE DOWN
+#
+
+upside_on)
+    send '\x1B\x7B\x01'
+    ;;
+
+upside_off)
+    send '\x1B\x7B\x00'
+    ;;
+
+#
+# SMOOTHING
+#
+
+smooth_on)
+    send '\x1D\x62\x01'
+    ;;
+
+smooth_off)
+    send '\x1D\x62\x00'
+    ;;
+
+#
+# BEEP
+#
+
+beep)
+    send '\x1B\x42\x03\x02'
+    ;;
+
+#
+# STATUS
+#
+
+status)
+    send '\x10\x04\x01'
+    ;;
+
+paper_status)
+    send '\x10\x04\x04'
+    ;;
+
+#
+# BARCODES
+#
+
+barcode_hri_on)
+    send '\x1D\x48\x02'
+    ;;
+
+barcode_hri_off)
+    send '\x1D\x48\x00'
+    ;;
+
+barcode_height)
+    send '\x1D\x68\x50'
+    ;;
+
+barcode_width)
+    send '\x1D\x77\x03'
+    ;;
+
+#
+# QR SUPPORT (many printers)
+#
+
+qr_model2)
+    send '\x1D\x28\x6B\x04\x00\x31\x41\x32\x00'
+    ;;
+
+qr_size4)
+    send '\x1D\x28\x6B\x03\x00\x31\x43\x04'
+    ;;
+
+qr_ec_m)
+    send '\x1D\x28\x6B\x03\x00\x31\x45\x31'
+    ;;
+
+#
+# RAW HEX
+#
+
+raw)
+    shift
+    printf "$*" > "$PRINTER"
+    ;;
+
+#
+# HELP
+#
+
+list|help|-h|--help|"")
+cat <<EOF
+ESC/POS Modes:
+
+TEXT
+  init
+  normal
+  bold_on/off
+  underline_on/off
+  underline_thick
+  italic_on/off
+  invert_on/off
+  strike_on/off
+
+FONTS
+  font_a
+  font_b
+  font_c
+
+SIZES
+  double_width
+  double_height
+  double_hw
+  quad
+  size_normal
+  size_wide
+  size_tall
+  size_big
+
+ALIGN
+  left
+  center
+  right
+
+PAPER
+  lf
+  feed
+  feed2
+  feed3
+  feed5
+
+CUT
+  cut
+  partial_cut
+
+DRAWER
+  drawer
+
+LINE SPACING
+  ls_default
+  ls_24
+  ls_16
+  ls_8
+
+CODEPAGES
+  cp437
+  cp850
+  cp860
+  cp863
+  cp865
+  cp866
+  windows1252
+
+ROTATION
+  rotate_on/off
+  upside_on/off
+
+SMOOTH
+  smooth_on/off
+
+STATUS
+  status
+  paper_status
+
+BARCODE
+  barcode_hri_on/off
+  barcode_height
+  barcode_width
+
+QR
+  qr_model2
+  qr_size4
+  qr_ec_m
+
+RAW
+  raw '\\x1B\\x40'
+
+EOF
+    ;;
+
+*)
+    echo "Unknown mode: $1"
+    exit 1
+    ;;
+esac
